@@ -25,9 +25,10 @@
   --error-bg: rgba(244, 63, 94, 0.12);
   --error-border: rgba(244, 63, 94, 0.3);
 
-  --warning: #f59e0b;
-  --warning-bg: rgba(245, 158, 11, 0.12);
-  --warning-border: rgba(245, 158, 11, 0.3);
+  --warning-callout-bg: rgba(225, 29, 72, 0.12);
+  --warning-callout-border: rgba(244, 63, 94, 0.4);
+  --warning-callout-title: #fecdd3;
+  --warning-callout-text: #ffe4e6;
 
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
@@ -186,6 +187,45 @@ body {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* --- Prominent Red Warning Notice Callout --- */
+.warning-callout {
+  background: var(--warning-callout-bg);
+  border: 1px solid var(--warning-callout-border);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.1);
+}
+
+.warning-callout-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.warning-icon {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.warning-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--warning-callout-title);
+  text-transform: uppercase;
+}
+
+.warning-text {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--warning-callout-text);
+  font-weight: 500;
+}
+
 /* --- Forms --- */
 .form-group {
   display: flex;
@@ -198,6 +238,7 @@ body {
   font-size: 0.875rem;
   font-weight: 600;
   color: #e2e8f0;
+  line-height: 1.35;
 }
 
 .required {
@@ -250,6 +291,11 @@ body {
 .form-hint {
   font-size: 0.775rem;
   color: var(--text-dim);
+}
+
+.name-hint {
+  color: #cbd5e1;
+  font-weight: 500;
 }
 
 /* --- Buttons --- */
@@ -483,5 +529,11 @@ body {
   .btn {
     font-size: 0.9rem;
     padding: 0.8rem 1.25rem;
+  }
+  .warning-title {
+    font-size: 0.8rem;
+  }
+  .warning-text {
+    font-size: 0.8rem;
   }
 }

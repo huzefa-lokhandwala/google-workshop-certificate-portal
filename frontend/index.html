@@ -33,10 +33,21 @@
     <section class="card portal-card" aria-label="Certificate Generation Form">
       <form id="certificateForm" novalidate>
         
+        <!-- Prominent One-Time Generation Warning Notice -->
+        <div class="warning-callout" role="alert">
+          <div class="warning-callout-header">
+            <span class="warning-icon" aria-hidden="true">⚠️</span>
+            <span class="warning-title">IMPORTANT: ENTER YOUR CORRECT NAME</span>
+          </div>
+          <p class="warning-text">
+            Please enter your correct full name exactly as you want it to appear on your certificate. Your certificate can be generated only once, and the name entered here will be printed on the certificate.
+          </p>
+        </div>
+
         <!-- Full Name Input -->
         <div class="form-group">
           <label for="fullName" class="form-label">
-            Full Name <span class="required">*</span>
+            Full Name (exactly as it should appear on your certificate) <span class="required">*</span>
           </label>
           <div class="input-wrapper">
             <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -48,13 +59,13 @@
               id="fullName" 
               name="fullName" 
               class="form-control" 
-              placeholder="e.g. Jane Doe" 
+              placeholder="Enter your full name exactly" 
               autocomplete="name" 
               required
               maxlength="100"
             >
           </div>
-          <span class="form-hint">Enter your name exactly as it should appear on your certificate.</span>
+          <span class="form-hint name-hint">Please double-check your spelling. This name will be printed on your certificate.</span>
         </div>
 
         <!-- Email Input -->
@@ -77,7 +88,7 @@
               required
             >
           </div>
-          <span class="form-hint">The email address you used during the Google Meet workshop.</span>
+          <span class="form-hint">The email address you used during the workshop.</span>
         </div>
 
         <!-- Verification Actions & Status Box -->

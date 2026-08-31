@@ -20,7 +20,11 @@ def test_generate_certificate_authorized_success(client, db_session):
     # Read PDF text with pypdf
     reader = PdfReader(io.BytesIO(pdf_bytes))
     assert len(reader.pages) == 1
-    page_text = reader.pages[0].extract_text()
+    page = reader.pages[0]
+    # Check page dimensions match final template (841.89 x 595.28 pt)
+    assert round(float(page.mediabox.width), 1) == 841.9
+    assert round(float(page.mediabox.height), 1) == 595.3
+    page_text = page.extract_text()
     assert "Alice Wonderland" in page_text
 
     # Verify participant model is updated
@@ -54,9 +58,9 @@ def test_generate_certificate_various_name_lengths(client, test_name, monkeypatc
     reader = PdfReader(io.BytesIO(pdf_bytes))
     assert len(reader.pages) == 1
     page = reader.pages[0]
-    # Check page dimensions match actual template (884.38 x 637.78 pt)
-    assert round(float(page.mediabox.width), 1) == 884.4
-    assert round(float(page.mediabox.height), 1) == 637.8
+    # Check page dimensions match final template (841.89 x 595.28 pt)
+    assert round(float(page.mediabox.width), 1) == 841.9
+    assert round(float(page.mediabox.height), 1) == 595.3
     assert test_name in page.extract_text()
 
 
