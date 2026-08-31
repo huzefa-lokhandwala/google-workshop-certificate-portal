@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Generate and download your official Google Meet Workshop Certificate of Completion.">
+  <title>Google Meet Workshop - Certificate Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="background-decorations" aria-hidden="true">
+    <div class="glow-sphere glow-1"></div>
+    <div class="glow-sphere glow-2"></div>
+    <div class="grid-pattern"></div>
+  </div>
+
+  <main class="portal-wrapper">
+    <header class="portal-header">
+      <div class="badge-pill">
+        <span class="badge-dot"></span>
+        <span>Official Workshop Credential</span>
+      </div>
+      <h1 class="portal-title">Google Meet Workshop</h1>
+      <p class="portal-subtitle">Certificate of Completion Portal</p>
+      <p class="portal-description">
+        Enter your details below to verify your participation and claim your personalized certificate.
+      </p>
+    </header>
+
+    <section class="card portal-card" aria-label="Certificate Generation Form">
+      <form id="certificateForm" novalidate>
+        
+        <!-- Full Name Input -->
+        <div class="form-group">
+          <label for="fullName" class="form-label">
+            Full Name <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <input 
+              type="text" 
+              id="fullName" 
+              name="fullName" 
+              class="form-control" 
+              placeholder="e.g. Jane Doe" 
+              autocomplete="name" 
+              required
+              maxlength="100"
+            >
+          </div>
+          <span class="form-hint">Enter your name exactly as it should appear on your certificate.</span>
+        </div>
+
+        <!-- Email Input -->
+        <div class="form-group">
+          <label for="emailAddress" class="form-label">
+            Email Address <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </svg>
+            <input 
+              type="email" 
+              id="emailAddress" 
+              name="emailAddress" 
+              class="form-control" 
+              placeholder="e.g. jane.doe@example.com" 
+              autocomplete="email" 
+              required
+            >
+          </div>
+          <span class="form-hint">The email address you used during the Google Meet workshop.</span>
+        </div>
+
+        <!-- Verification Actions & Status Box -->
+        <div class="action-section">
+          <button type="button" id="verifyBtn" class="btn btn-secondary">
+            <span class="btn-text">Verify Email</span>
+            <span class="btn-spinner" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <!-- Status Message Banner -->
+        <div id="statusBanner" class="status-banner hidden" role="status" aria-live="polite">
+          <div class="status-icon" aria-hidden="true"></div>
+          <div class="status-content">
+            <p id="statusMessage" class="status-text"></p>
+          </div>
+        </div>
+
+        <!-- Generation Action Button -->
+        <div class="generate-section">
+          <button type="submit" id="generateBtn" class="btn btn-primary" disabled>
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 0 0 4.561 21h14.878a2 2 0 0 0 1.94-1.515L22 17"></path>
+            </svg>
+            <span class="btn-text">Generate Certificate</span>
+            <span class="btn-spinner" aria-hidden="true"></span>
+          </button>
+        </div>
+
+      </form>
+
+      <!-- Success View (Hidden Initially) -->
+      <div id="successPanel" class="success-panel hidden">
+        <div class="success-icon-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <h2 class="success-title">Certificate Ready!</h2>
+        <p class="success-desc">
+          Your personalized certificate has been generated successfully and your download should start automatically.
+        </p>
+        <div class="success-actions">
+          <a id="downloadLink" class="btn btn-success" download="certificate.pdf" href="#">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Download Certificate</span>
+          </a>
+          <button type="button" id="resetBtn" class="btn btn-outline">
+            Generate Another
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <footer class="portal-footer">
+      <p>&copy; Google Meet Interactive Workshop. All rights reserved.</p>
+      <p class="footer-note">Only verified workshop participants are eligible for certificate issuance.</p>
+    </footer>
+  </main>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

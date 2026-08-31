@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: certificate-portal
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.8
+      - key: CERTIFICATE_TEMPLATE_PATH
+        value: backend/templates/certificate.pdf
+      - key: CERTIFICATE_NAME_X
+        value: "442.185"
+      - key: CERTIFICATE_NAME_Y
+        value: "296.0"
+      - key: CERTIFICATE_NAME_FONT_SIZE
+        value: "28"
+      - key: CERTIFICATE_NAME_FONT
+        value: "Helvetica-Bold"
+      - key: CERTIFICATE_NAME_COLOR
+        value: "#1e293b"
+      - key: CERTIFICATE_TEXT_ALIGN
+        value: "center"
+      - key: ALLOW_CERTIFICATE_REGENERATION
+        value: "false"
