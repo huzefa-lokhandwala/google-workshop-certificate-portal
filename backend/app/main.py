@@ -51,22 +51,32 @@ async def lifespan(app: FastAPI):
     # Initialize database tables non-destructively (CREATE TABLE IF NOT EXISTS)
     init_db()
 
-    # Auto-seed participants from CSV if database table is currently empty
-    try:
-        from backend.app.database import SessionLocal
-        from backend.app.models import Participant
-        db = SessionLocal()
+    # Synchronize participants and handle certificate reset on startup (skipped during automated pytest)
+    if not os.getenv("PYTEST_CURRENT_TEST"):
         try:
-            if db.query(Participant).count() == 0:
+            from backend.app.database import SessionLocal
+            from backend.app.models import Participant
+            db = SessionLocal()
+            try:
+                # 1. Sync participants from CSV if available (upsert ensures all 195 participants are registered)
                 for candidate in ["participants.csv", "Participants.csv"]:
                     if os.path.exists(candidate):
                         from scripts.import_participants import import_csv
                         import_csv(candidate, default_eligible=True)
                         break
-        finally:
-            db.close()
-    except Exception:
-        pass
+
+                # 2. Reset already generated certificates if RESET_CERTIFICATES is enabled (default: true)
+                should_reset = os.getenv("RESET_CERTIFICATES", "true").lower() in ("true", "1", "yes")
+                if should_reset:
+                    reset_count = db.query(Participant).filter(Participant.certificate_generated == True).update(
+                        {Participant.certificate_generated: False, Participant.generated_at: None}
+                    )
+                    if reset_count > 0:
+                        db.commit()
+            finally:
+                db.close()
+        except Exception:
+            pass
 
     yield
 

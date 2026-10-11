@@ -99,7 +99,8 @@ pytest -v
 | `CERTIFICATE_NAME_COLOR` | `#1e293b` | Hex text color |
 | `CERTIFICATE_TEXT_ALIGN` | `center` | Text alignment (`center`, `left`, or `right`) |
 | `CERTIFICATE_PAGE` | `0` | 0-indexed page number of the template to overlay text |
-| `ALLOW_CERTIFICATE_REGENERATION` | `false` | When `false`, blocks repeated certificate generations for an email |
+| `ALLOW_CERTIFICATE_REGENERATION` | `false` | When `false`, blocks repeated certificate generations for an email (set to `true` on Render to allow re-downloads) |
+| `RESET_CERTIFICATES` | `true` | When `true`, resets already generated certificate flags upon server startup |
 
 ---
 

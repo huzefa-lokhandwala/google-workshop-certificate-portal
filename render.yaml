@@ -26,4 +26,6 @@ services:
       - key: CERTIFICATE_TEXT_ALIGN
         value: "center"
       - key: ALLOW_CERTIFICATE_REGENERATION
-        value: "false"
+        value: "true"
+      - key: RESET_CERTIFICATES
+        value: "true"
