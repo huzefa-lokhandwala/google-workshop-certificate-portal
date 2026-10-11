@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from fastapi.testclient import TestClient
 
-from backend.app.database import Base, get_db
+from backend.app.database import Base, get_db, normalize_database_url
 from backend.app.main import app, rate_limiter
 from backend.app.models import Participant
 from backend.app.services.participant_service import (
@@ -14,7 +14,7 @@ from backend.app.services.participant_service import (
     claim_certificate_generation
 )
 
-PG_TEST_URL = os.getenv("PG_TEST_URL", "postgresql://127.0.0.1:5432/cert_test_db")
+PG_TEST_URL = normalize_database_url(os.getenv("PG_TEST_URL", "postgresql://127.0.0.1:5432/cert_test_db"))
 
 
 def is_postgres_available():
