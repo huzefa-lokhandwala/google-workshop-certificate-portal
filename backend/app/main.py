@@ -50,6 +50,24 @@ rate_limiter = InMemoryRateLimiter(
 async def lifespan(app: FastAPI):
     # Initialize database tables non-destructively (CREATE TABLE IF NOT EXISTS)
     init_db()
+
+    # Auto-seed participants from CSV if database table is currently empty
+    try:
+        from backend.app.database import SessionLocal
+        from backend.app.models import Participant
+        db = SessionLocal()
+        try:
+            if db.query(Participant).count() == 0:
+                for candidate in ["participants.csv", "Participants.csv"]:
+                    if os.path.exists(candidate):
+                        from scripts.import_participants import import_csv
+                        import_csv(candidate, default_eligible=True)
+                        break
+        finally:
+            db.close()
+    except Exception:
+        pass
+
     yield
 
 

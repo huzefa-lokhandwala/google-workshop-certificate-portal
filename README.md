@@ -90,10 +90,10 @@ pytest -v
 | `PORT` | `8000` | Server listening port (Render automatically provides this) |
 | `DATABASE_URL` | `sqlite:///./backend/data/participants.db` | Connection string. For Render persistence, set to your free PostgreSQL connection URI (e.g. Neon or Supabase) |
 | `CERTIFICATE_TEMPLATE_PATH` | `backend/templates/certificate.pdf` | Path to the PDF certificate template |
-| `CERTIFICATE_NAME_X` | `420.945` | Center X coordinate in PDF points (A4 width 841.89 pt) |
-| `CERTIFICATE_NAME_Y` | `276.0` | Y coordinate in PDF points for participant name (above line at Y=268.88 pt) |
+| `CERTIFICATE_NAME_X` | `442.32` | Center X coordinate in PDF points (Template width 884.38 pt) |
+| `CERTIFICATE_NAME_Y` | `308.0` | Y coordinate in PDF points for participant name (above line at Y=299.23 pt) |
 | `CERTIFICATE_NAME_FONT_SIZE` | `28` | Base font size in points (auto-scaled for long names) |
-| `CERTIFICATE_NAME_MAX_WIDTH` | `430.0` | Maximum allowed width in points on the name line before auto-scaling |
+| `CERTIFICATE_NAME_MAX_WIDTH` | `460.0` | Maximum allowed width in points on the name line before auto-scaling |
 | `CERTIFICATE_NAME_FONT` | `Helvetica-Bold` | Font name (e.g. `Helvetica-Bold`, `Times-Bold`) |
 | `CERTIFICATE_CUSTOM_FONT_PATH` | `None` | Optional path to a custom TrueType font (.ttf) |
 | `CERTIFICATE_NAME_COLOR` | `#1e293b` | Hex text color |

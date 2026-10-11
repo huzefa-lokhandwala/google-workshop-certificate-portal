@@ -11,13 +11,25 @@ from backend.app.schemas import normalize_email, sanitize_name
 from backend.app.services.participant_service import upsert_participant
 
 
-def import_csv(file_path: str, default_eligible: bool = True):
+def import_csv(file_path: str = "participants.csv", default_eligible: bool = True, clear_existing: bool = False):
+    if not os.path.exists(file_path):
+        for candidate in ["participants.csv", "Participants.csv", "participant.csv", "Participants.CSV"]:
+            if os.path.exists(candidate):
+                file_path = candidate
+                break
+
     if not os.path.exists(file_path):
         print(f"Error: CSV file '{file_path}' not found.", file=sys.stderr)
         sys.exit(1)
 
     init_db()
     db = SessionLocal()
+
+    if clear_existing:
+        from backend.app.models import Participant
+        deleted_count = db.query(Participant).delete()
+        db.commit()
+        print(f"Cleared {deleted_count} existing participant(s) from database.")
 
     total_rows = 0
     inserted_count = 0
@@ -75,11 +87,12 @@ def import_csv(file_path: str, default_eligible: bool = True):
 
 def main():
     parser = argparse.ArgumentParser(description="Import workshop participants from a CSV file.")
-    parser.add_argument("csv_file", help="Path to CSV file with 'email' and optional 'name' column.")
+    parser.add_argument("csv_file", nargs="?", default="participants.csv", help="Path to CSV file with 'email' and optional 'name' column (default: participants.csv).")
+    parser.add_argument("--clear", action="store_true", help="Remove all existing participants in database before importing.")
     parser.add_argument("--ineligible", action="store_true", help="Set imported participants as ineligible.")
     args = parser.parse_args()
 
-    import_csv(args.csv_file, default_eligible=not args.ineligible)
+    import_csv(args.csv_file, default_eligible=not args.ineligible, clear_existing=args.clear)
 
 
 if __name__ == "__main__":

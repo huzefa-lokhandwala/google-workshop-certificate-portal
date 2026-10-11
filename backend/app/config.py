@@ -23,12 +23,12 @@ class Settings(BaseSettings):
     CERTIFICATE_TEMPLATE_PATH: str = os.getenv(
         "CERTIFICATE_TEMPLATE_PATH", "backend/templates/certificate.pdf"
     )
-    # A4 Landscape Dimensions: 841.89 pt x 595.28 pt
-    # Line center is at X=420.945 pt, Y=268.88 pt; baseline sits at Y=276.0 pt
-    CERTIFICATE_NAME_X: float = float(os.getenv("CERTIFICATE_NAME_X", "420.945"))
-    CERTIFICATE_NAME_Y: float = float(os.getenv("CERTIFICATE_NAME_Y", "276.0"))
+    # Certificate Dimensions: 884.38 pt x 637.78 pt
+    # Line center is at X=442.32 pt, Y=299.23 pt; baseline sits at Y=308.0 pt
+    CERTIFICATE_NAME_X: float = float(os.getenv("CERTIFICATE_NAME_X", "442.32"))
+    CERTIFICATE_NAME_Y: float = float(os.getenv("CERTIFICATE_NAME_Y", "308.0"))
     CERTIFICATE_NAME_FONT_SIZE: int = int(os.getenv("CERTIFICATE_NAME_FONT_SIZE", "28"))
-    CERTIFICATE_NAME_MAX_WIDTH: float = float(os.getenv("CERTIFICATE_NAME_MAX_WIDTH", "430.0"))
+    CERTIFICATE_NAME_MAX_WIDTH: float = float(os.getenv("CERTIFICATE_NAME_MAX_WIDTH", "460.0"))
     CERTIFICATE_NAME_FONT: str = os.getenv("CERTIFICATE_NAME_FONT", "Helvetica-Bold")
     CERTIFICATE_CUSTOM_FONT_PATH: Optional[str] = os.getenv("CERTIFICATE_CUSTOM_FONT_PATH", None)
     CERTIFICATE_NAME_COLOR: str = os.getenv("CERTIFICATE_NAME_COLOR", "#1e293b")
