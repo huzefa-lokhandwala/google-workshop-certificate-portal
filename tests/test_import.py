@@ -39,3 +39,32 @@ user.one@example.com,User One Updated
     finally:
         if os.path.exists(tmp_path):
             os.remove(tmp_path)
+
+
+def test_import_removes_old_participants(db_session, monkeypatch):
+    # db_session already has authorized@example.com seeded from conftest
+    assert get_participant_by_email(db_session, "authorized@example.com") is not None
+
+    new_csv_content = """email,name
+fresh.participant@example.com,Fresh Participant
+"""
+    with tempfile.NamedTemporaryFile(mode="w+", delete=False, suffix=".csv") as tmp:
+        tmp.write(new_csv_content)
+        tmp_path = tmp.name
+
+    try:
+        monkeypatch.setattr("scripts.import_participants.SessionLocal", lambda: db_session)
+        monkeypatch.setattr("scripts.import_participants.init_db", lambda: None)
+
+        import_csv(tmp_path, default_eligible=True, remove_old=True)
+
+        # Fresh participant should exist
+        fresh = get_participant_by_email(db_session, "fresh.participant@example.com")
+        assert fresh is not None
+        assert fresh.eligible is True
+
+        # Old participant (authorized@example.com) should have been removed
+        assert get_participant_by_email(db_session, "authorized@example.com") is None
+    finally:
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)

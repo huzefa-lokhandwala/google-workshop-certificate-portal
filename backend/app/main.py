@@ -58,11 +58,11 @@ async def lifespan(app: FastAPI):
             from backend.app.models import Participant
             db = SessionLocal()
             try:
-                # 1. Sync participants from CSV if available (upsert ensures all 195 participants are registered)
+                # 1. Sync participants from CSV and delete any old participants not in current CSV
                 for candidate in ["participants.csv", "Participants.csv"]:
                     if os.path.exists(candidate):
                         from scripts.import_participants import import_csv
-                        import_csv(candidate, default_eligible=True)
+                        import_csv(candidate, default_eligible=True, remove_old=True)
                         break
 
                 # 2. Reset already generated certificates if RESET_CERTIFICATES is enabled (default: true)

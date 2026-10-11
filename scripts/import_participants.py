@@ -11,7 +11,12 @@ from backend.app.schemas import normalize_email, sanitize_name
 from backend.app.services.participant_service import upsert_participant
 
 
-def import_csv(file_path: str = "participants.csv", default_eligible: bool = True, clear_existing: bool = False):
+def import_csv(
+    file_path: str = "participants.csv",
+    default_eligible: bool = True,
+    clear_existing: bool = False,
+    remove_old: bool = True
+):
     if not os.path.exists(file_path):
         for candidate in ["participants.csv", "Participants.csv", "participant.csv", "Participants.CSV"]:
             if os.path.exists(candidate):
@@ -31,6 +36,7 @@ def import_csv(file_path: str = "participants.csv", default_eligible: bool = Tru
         db.commit()
         print(f"Cleared {deleted_count} existing participant(s) from database.")
 
+    valid_csv_emails = set()
     total_rows = 0
     inserted_count = 0
     updated_count = 0
@@ -57,6 +63,8 @@ def import_csv(file_path: str = "participants.csv", default_eligible: bool = Tru
                     skipped_count += 1
                     continue
 
+                valid_csv_emails.add(normalized)
+
                 raw_name = row.get(name_col, "") if name_col else None
                 name = sanitize_name(raw_name) if raw_name else None
 
@@ -74,10 +82,21 @@ def import_csv(file_path: str = "participants.csv", default_eligible: bool = Tru
                 except Exception as e:
                     skipped_count += 1
 
+        removed_old_count = 0
+        if remove_old and valid_csv_emails:
+            from backend.app.models import Participant
+            # Delete any participants in the database whose email is NOT in the new CSV
+            removed_old_count = db.query(Participant).filter(
+                ~Participant.normalized_email.in_(valid_csv_emails)
+            ).delete(synchronize_session=False)
+            db.commit()
+
         print("\n=== Participant Import Summary ===")
         print(f"Total Rows Processed: {total_rows}")
         print(f"New Participants Inserted: {inserted_count}")
         print(f"Existing Participants Updated: {updated_count}")
+        if remove_old:
+            print(f"Old Participants Removed: {removed_old_count}")
         print(f"Invalid / Skipped Rows: {skipped_count}")
         print("Database sync completed successfully.")
 
@@ -89,10 +108,11 @@ def main():
     parser = argparse.ArgumentParser(description="Import workshop participants from a CSV file.")
     parser.add_argument("csv_file", nargs="?", default="participants.csv", help="Path to CSV file with 'email' and optional 'name' column (default: participants.csv).")
     parser.add_argument("--clear", action="store_true", help="Remove all existing participants in database before importing.")
+    parser.add_argument("--keep-old", action="store_true", help="Do not remove existing participants who are absent from the CSV file.")
     parser.add_argument("--ineligible", action="store_true", help="Set imported participants as ineligible.")
     args = parser.parse_args()
 
-    import_csv(args.csv_file, default_eligible=not args.ineligible, clear_existing=args.clear)
+    import_csv(args.csv_file, default_eligible=not args.ineligible, clear_existing=args.clear, remove_old=not args.keep_old)
 
 
 if __name__ == "__main__":
